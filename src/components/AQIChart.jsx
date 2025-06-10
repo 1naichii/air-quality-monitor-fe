@@ -6,9 +6,10 @@ import { getAQIColor } from '../utils/aqi'
 const AQIChart = ({ data, darkMode }) => {
   if (!data || data.length === 0) return null
 
-  // Sort data by time and take last 24 hours or last 20 points
+  // Get more data points for scrollable chart
+  const maxDataPoints = data.length > 50 ? 50 : data.length
   const chartData = data
-    .slice(-20)
+    .slice(-maxDataPoints)
     .reverse() // Show chronological order
     .map(item => ({
       time: format(new Date(item.reading_time), 'HH:mm'),
@@ -17,6 +18,10 @@ const AQIChart = ({ data, darkMode }) => {
       fullTime: new Date(item.reading_time).toLocaleString('id-ID'),
       color: getAQIColor(item.aqi)
     }))
+
+  // Calculate chart width based on data points
+  const minChartWidth = Math.max(800, chartData.length * 60) // Minimum 800px, or 60px per data point
+  const shouldScroll = chartData.length > 10 // Enable scroll if more than 10 data points
 
   // Reference lines for AQI categories
   const aqiThresholds = [
@@ -48,27 +53,44 @@ const AQIChart = ({ data, darkMode }) => {
     return null
   }
 
-  return (    <div className={`glass-effect border ${darkMode ? 'border-gray-700/50' : 'border-gray-200/50'} rounded-xl p-6 sm:p-8 shadow-soft`}>
+  return (    
+    <div className={`glass-effect border ${darkMode ? 'border-gray-700/50' : 'border-gray-200/50'} rounded-xl p-6 sm:p-8 shadow-soft`}>
       <div className="flex items-center justify-between mb-6">
-        <div>
-          <div className="flex items-center space-x-2 mb-2">
+        <div>          <div className="flex items-center space-x-2 mb-2">
             <TrendingUp className={`h-5 w-5 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`} />
             <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>AQI Trend Analysis</h3>
+            {shouldScroll && (
+              <div className={`text-xs px-2 py-1 rounded-full ${darkMode ? 'bg-blue-900/50 text-blue-300' : 'bg-blue-100 text-blue-700'}`}>
+                Scrollable
+              </div>
+            )}
           </div>
-          <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Last 20 readings • Real-time monitoring</p>
+          <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+            Last {chartData.length} readings • Real-time monitoring
+            {shouldScroll && (
+              <span className={`ml-2 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>
+                ← Scroll horizontal untuk melihat semua data →
+              </span>
+            )}
+          </p>
         </div>
-      </div>
-
-      <div className="h-80 sm:h-96 mb-4">
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-            <defs>
-              <linearGradient id="aqiGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.4}/>
-                <stop offset="50%" stopColor="#8b5cf6" stopOpacity={0.2}/>
-                <stop offset="95%" stopColor="#06b6d4" stopOpacity={0.1}/>
-              </linearGradient>
-            </defs>            <CartesianGrid 
+      </div>      <div className={`chart-scroll-container ${shouldScroll ? 'overflow-x-auto scrollbar-thin' : ''}`}>
+        <div 
+          className="h-80 sm:h-96 mb-4" 
+          style={{ 
+            minWidth: shouldScroll ? `${minChartWidth}px` : '100%',
+            width: shouldScroll ? `${minChartWidth}px` : '100%'
+          }}
+        >
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+              <defs>
+                <linearGradient id="aqiGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.4}/>
+                  <stop offset="50%" stopColor="#8b5cf6" stopOpacity={0.2}/>
+                  <stop offset="95%" stopColor="#06b6d4" stopOpacity={0.1}/>
+                </linearGradient>
+              </defs><CartesianGrid 
               strokeDasharray="3 3" 
               stroke="#e5e7eb" 
               strokeOpacity={0.6}
@@ -125,11 +147,11 @@ const AQIChart = ({ data, darkMode }) => {
                 strokeWidth: 2, 
                 fill: '#ffffff',
                 drop: true 
-              }}
-            />
+              }}            />
           </AreaChart>
         </ResponsiveContainer>
       </div>
+    </div>
       
       {/* Chart Legend */}
       <div className="flex flex-wrap items-center justify-center gap-4 text-xs">

@@ -159,3 +159,66 @@ html.light {
 .animate-pulse-subtle {
   animation: pulse-subtle 2s ease-in-out infinite;
 }
+
+/* Custom scrollbar styles for charts */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-800 rounded-full;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 dark:bg-gray-500 rounded-full;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500 dark:bg-gray-400;
+}
+
+/* Smooth horizontal scrolling */
+.overflow-x-auto {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Chart container improvements */
+.chart-scroll-container {
+  position: relative;
+}
+
+.chart-scroll-container::before,
+.chart-scroll-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 20px;
+  width: 20px;
+  pointer-events: none;
+  z-index: 10;
+  transition: opacity 0.3s ease;
+}
+
+.chart-scroll-container::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(255,255,255,0.8), transparent);
+}
+
+.chart-scroll-container::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(255,255,255,0.8), transparent);
+}
+
+.dark .chart-scroll-container::before {
+  background: linear-gradient(to right, rgba(17,24,39,0.8), transparent);
+}
+
+.dark .chart-scroll-container::after {
+  background: linear-gradient(to left, rgba(17,24,39,0.8), transparent);
+}
