@@ -1,8 +1,29 @@
 {
-  "name": "fe",
+  "name": "air-quality-monitor-fe",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "Frontend aplikasi monitoring kualitas udara real-time dengan React + Vite dan PWA support",
+  "author": "1naichii",
+  "license": "MIT",
+  "homepage": "https://github.com/1naichii/air-quality-monitor-fe#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1naichii/air-quality-monitor-fe.git"
+  },
+  "bugs": {
+    "url": "https://github.com/1naichii/air-quality-monitor-fe/issues"
+  },
+  "keywords": [
+    "air-quality",
+    "monitoring",
+    "react",
+    "vite",
+    "pwa",
+    "aqi",
+    "sensor",
+    "real-time"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
