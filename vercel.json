@@ -9,11 +9,6 @@
     "VITE_WS_URL": "",
     "VITE_APP_NAME": "Air Quality Monitor"
   },
-  "functions": {
-    "app/api/**/*.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
   "redirects": [
     {
       "source": "/(.*)",
