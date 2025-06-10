@@ -14,13 +14,13 @@ const Dashboard = ({ darkMode }) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [lastUpdated, setLastUpdated] = useState(null)
+  const [isPolling, setIsPolling] = useState(false)
 
   // Debug log untuk dark mode
   useEffect(() => {
     console.log('Dashboard received darkMode prop:', darkMode)
   }, [darkMode])
-
-  const fetchData = async () => {
+  const fetchAllData = async () => {
     try {
       setLoading(true)
       setError(null)
@@ -37,42 +37,71 @@ const Dashboard = ({ darkMode }) => {
     }
   }
 
-  useEffect(() => {
-    fetchData()
-    
-    // Auto refresh every 30 seconds
-    const interval = setInterval(fetchData, 30000)
-    
-    return () => clearInterval(interval)
-  }, [])  // WebSocket connection for real-time updates
-  useEffect(() => {
-    const enableWebSocket = import.meta.env.VITE_ENABLE_WEBSOCKET !== 'false'
-    if (!enableWebSocket) return
-    
-    const WS_URL = __WS_URL__ // Use injected constant for better security
+  const fetchLatestData = async () => {
+    if (data.length === 0) return
     
     try {
-      const ws = new WebSocket(WS_URL)
+      setIsPolling(true)
+      setError(null)
       
-      ws.onmessage = (event) => {
-        const message = JSON.parse(event.data)
-        if (message.type === 'newData') {
-          setData(prevData => [message.payload, ...prevData])
-          setLastUpdated(new Date())
+      // Get the timestamp of the most recent data point
+      const latestTimestamp = data[0]?.reading_time
+      
+      if (!latestTimestamp) return
+      
+      const response = await sensorAPI.getLatestSensorData(latestTimestamp)
+      
+      if (response && response.length > 0) {
+        // Prepend new data to existing data and limit to reasonable amount
+        const updatedData = [...response, ...data].slice(0, 1000)
+        setData(updatedData)
+        setLastUpdated(new Date())
+        
+        // Show notification for new data
+        if (response.length === 1) {
+          window.showNotification?.('New air quality reading received!', 'info')
+        } else if (response.length > 1) {
+          window.showNotification?.(`${response.length} new readings received!`, 'info')
         }
       }
-
-      ws.onerror = (error) => {
-        console.error('WebSocket error:', error)
+    } catch (err) {
+      // Don't show errors for polling failures to avoid spam
+      console.error('Error polling for latest data:', err)
+      
+      // Only set error state if we have no data at all
+      if (data.length === 0) {
+        setError('Connection lost. Trying to reconnect...')
       }
-
-      return () => {
-        ws.close()
-      }
-    } catch (error) {
-      console.error('WebSocket connection failed:', error)
+    } finally {
+      setIsPolling(false)
     }
+  }
+
+  const fetchData = fetchAllData // For manual refresh button
+
+  useEffect(() => {
+    // Initial data fetch
+    fetchAllData()
   }, [])
+  useEffect(() => {
+    // Start aggressive polling after initial load
+    if (data.length > 0) {
+      // Poll every 3 seconds for new data
+      const pollInterval = setInterval(() => {
+        fetchLatestData()
+      }, 3000)
+      
+      // Also do a full refresh every 5 minutes to ensure data integrity
+      const refreshInterval = setInterval(() => {
+        fetchAllData()
+      }, 5 * 60 * 1000)
+      
+      return () => {
+        clearInterval(pollInterval)
+        clearInterval(refreshInterval)
+      }
+    }
+  }, [data.length]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const exportData = () => {
     if (data.length === 0) return
@@ -152,11 +181,11 @@ const Dashboard = ({ darkMode }) => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">        <div className="space-y-2">
           <h2 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
             Air Quality Dashboard
-          </h2>
-          {lastUpdated && (
+          </h2>          {lastUpdated && (
             <p className={`text-sm flex items-center space-x-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse-slow"></span>
+              <span className={`w-2 h-2 rounded-full ${isPolling ? 'bg-blue-500 animate-pulse' : 'bg-green-500'} ${!isPolling ? 'animate-pulse-slow' : ''}`}></span>
               <span>Last updated: {lastUpdated.toLocaleString('id-ID')}</span>
+              {isPolling && <span className="text-xs">(Checking for updates...)</span>}
             </p>
           )}
         </div>

@@ -1,5 +1,4 @@
 import { Wifi, WifiOff, Wind, Moon, Sun } from 'lucide-react'
-import WebSocketStatus from './WebSocketStatus'
 
 const Header = ({ isOnline, darkMode, toggleDarkMode }) => {
   const appName = import.meta.env.VITE_APP_NAME || 'Air Quality Monitor'
@@ -30,10 +29,8 @@ const Header = ({ isOnline, darkMode, toggleDarkMode }) => {
                 Real-time IoT Monitoring
               </p>
             </div>
-          </div>
-            <div className="flex items-center space-x-2 sm:space-x-4">
-            <WebSocketStatus />
-              {isOnline ? (
+          </div>          <div className="flex items-center space-x-2 sm:space-x-4">
+            {isOnline ? (
               <div className={`flex items-center space-x-1 sm:space-x-2 ${darkMode ? 'text-green-400' : 'text-green-600'}`}>
                 <Wifi className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span className="text-xs sm:text-sm font-medium hidden md:block">Online</span>

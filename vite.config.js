@@ -54,8 +54,7 @@ export default defineConfig(({ mode }) => {
     plugins,    define: {
       // Inject sensitive variables securely without VITE_ prefix
       __API_URL__: JSON.stringify(env.API_URL || 'http://localhost:3000/api'),
-      __API_KEY__: JSON.stringify(env.API_KEY || ''),
-      __WS_URL__: JSON.stringify(env.WS_URL || 'ws://localhost:3000')
+      __API_KEY__: JSON.stringify(env.API_KEY || '')
     },
     server: {
       host: true,

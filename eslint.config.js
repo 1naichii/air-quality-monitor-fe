@@ -13,7 +13,6 @@ export default [
         ...globals.browser,
         // Add Vite injected global constants
         __API_KEY__: 'readonly',
-        __WS_URL__: 'readonly',
         __API_URL__: 'readonly'
       },
       parserOptions: {

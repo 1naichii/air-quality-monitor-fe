@@ -16,7 +16,7 @@
 ## ✨ Fitur Utama
 
 - 📱 **Progressive Web App** - Dapat diinstall di Android/iOS
-- 🔄 **Real-time Monitoring** - WebSocket connection untuk data live sensor MQ135
+- 🔄 **Auto-refresh** - Polling data setiap 30 detik untuk monitoring sensor MQ135
 - 📊 **Interactive Dashboard** - Visualisasi AQI dengan charts interaktif
 - 🎨 **Modern UI/UX** - Design system dengan Tailwind CSS + Dark mode
 - 🔔 **Smart Notifications** - Alert otomatis untuk kualitas udara buruk
@@ -34,7 +34,6 @@ Frontend ini terhubung dengan backend API yang memerlukan:
 |----------|--------|------|---------|
 | `/api/sensor/mq135` | GET | API Key | Ambil semua data sensor |
 | `/api/sensor/mq135` | POST | API Key | Kirim data sensor baru |
-| WebSocket `/` | WS | - | Real-time data updates |
 
 ### API Response Format
 ```json
@@ -98,17 +97,19 @@ npm run dev
 
 ### Environment Variables
 ```env
-# API Configuration
-VITE_API_URL=http://localhost:3000/api
+# API Configuration (secure variables without VITE_ prefix)
+API_URL=http://localhost:3000/api
 API_KEY=your-api-key-here
-WS_URL=ws://localhost:3000
+
+# App Configuration
 VITE_APP_NAME=Air Quality Monitor
+VITE_APP_VERSION=1.0.0
+VITE_APP_URL=http://localhost:5173
 
 # Feature Controls
 VITE_ENABLE_PWA=true
 VITE_ENABLE_NOTIFICATIONS=true
 VITE_ENABLE_DARK_MODE=true
-VITE_ENABLE_WEBSOCKET=true
 ```
 
 ## 🔐 Enhanced Security Implementation
@@ -117,7 +118,7 @@ Aplikasi ini menggunakan **secure environment variable handling** untuk data sen
 
 ### 🛡️ **Security Architecture**
 - ✅ **`API_KEY`** - Tidak menggunakan prefix `VITE_`, tidak terekspos di client-side
-- ✅ **`WS_URL`** - Tidak menggunakan prefix `VITE_`, tidak terekspos di client-side  
+- ✅ **`API_URL`** - Tidak menggunakan prefix `VITE_`, tidak terekspos di client-side  
 - ✅ **Build-time injection** - Diinjeksi via Vite `define` saat build time
 - ✅ **No browser exposure** - Tidak dapat diakses via developer tools atau network inspection
 - ⚠️ **Public configs** - `VITE_*` variables tetap terekspos (sesuai kebutuhan UI)
@@ -125,33 +126,32 @@ Aplikasi ini menggunakan **secure environment variable handling** untuk data sen
 ### 🔧 **Implementation Details**
 1. **Secure Variables (Server-side only):**
    ```env
+   API_URL=https://your-backend-api.com/api  # 🔒 Not exposed
    API_KEY=your-secret-api-key    # 🔒 Not exposed
-   WS_URL=wss://your-ws-url.com   # 🔒 Not exposed
    ```
 
 2. **Public Variables (Client-side accessible):**
    ```env
-   VITE_API_URL=https://api.com   # 🌐 Publicly accessible
    VITE_APP_NAME=My App           # 🌐 Publicly accessible
+   VITE_ENABLE_PWA=true          # 🌐 Publicly accessible
    ```
 
 3. **Code Usage:**
    ```javascript
    // Secure access - injected as constants
+   const apiUrl = __API_URL__     // Safe, not in import.meta.env
    const apiKey = __API_KEY__     // Safe, not in import.meta.env
-   const wsUrl = __WS_URL__       // Safe, not in import.meta.env
    
    // Public access - standard Vite behavior
-   const apiUrl = import.meta.env.VITE_API_URL  // Exposed, as intended
+   const appName = import.meta.env.VITE_APP_NAME  // Exposed, as intended
    ```
 
-### Setup API Key & WebSocket
+### Setup API Configuration
 1. **Dapatkan credentials** dari backend administrator
 2. **Set environment variables** tanpa prefix VITE_:
    ```env
    API_URL=https://your-backend-api.com/api
    API_KEY=your-secret-api-key
-   WS_URL=wss://your-websocket-url.com
    ```
 3. **Variables diinjeksi** secara aman saat build time
 4. **Tidak terekspos** di browser atau client-side inspection tools
@@ -169,14 +169,10 @@ Aplikasi ini menggunakan **secure environment variable handling** untuk data sen
 const API_URL = __API_URL__ // Injected securely, not in import.meta.env
 const API_KEY = __API_KEY__ // Injected securely, not in import.meta.env
 
-// components/*.jsx - Secure WebSocket URL usage  
-const WS_URL = __WS_URL__ // Injected securely, not in import.meta.env
-
 // vite.config.js - Build-time injection
 define: {
   __API_URL__: JSON.stringify(env.API_URL || ''),
-  __API_KEY__: JSON.stringify(env.API_KEY || ''),
-  __WS_URL__: JSON.stringify(env.WS_URL || 'ws://localhost:3000')
+  __API_KEY__: JSON.stringify(env.API_KEY || '')
 }
 ```
 
@@ -186,15 +182,14 @@ Untuk memverifikasi bahwa credentials tidak terekspos:
 
 1. **Build aplikasi**: `npm run build`
 2. **Buka browser dev tools** pada aplikasi yang ter-deploy
-3. **Cek Console**: `console.log(import.meta.env)` - API_KEY dan WS_URL tidak ada
+3. **Cek Console**: `console.log(import.meta.env)` - API_KEY tidak ada
 4. **Cek Network tab**: Headers tidak terlihat di request
 5. **Cek Source files**: Credentials tidak muncul di JavaScript bundle
 
 **Expected Results:**
-- ✅ `import.meta.env.VITE_API_URL` - Visible (intended)
 - ✅ `import.meta.env.VITE_APP_NAME` - Visible (intended)  
 - ❌ `import.meta.env.API_KEY` - Not found (secure)
-- ❌ `import.meta.env.WS_URL` - Not found (secure)
+- ❌ `import.meta.env.API_URL` - Not found (secure)
 
 ## 🎛️ Environment Variable Controls
 
@@ -207,7 +202,6 @@ Aplikasi ini mendukung berbagai environment variables untuk mengontrol fitur:
 | `VITE_ENABLE_PWA` | `true` | Enable/disable PWA functionality & install prompt |
 | `VITE_ENABLE_NOTIFICATIONS` | `true` | Enable/disable notification system |
 | `VITE_ENABLE_DARK_MODE` | `true` | Show/hide dark mode toggle button |
-| `VITE_ENABLE_WEBSOCKET` | `true` | Enable/disable real-time WebSocket connection |
 
 ### 🎨 **Customization Variables**
 
@@ -227,11 +221,6 @@ VITE_ENABLE_PWA=false
 **Custom app name:**
 ```env
 VITE_APP_NAME=My Custom Air Monitor
-```
-
-**Disable WebSocket untuk testing:**
-```env
-VITE_ENABLE_WEBSOCKET=false
 ```
 
 **Production-only notifications:**
@@ -258,27 +247,6 @@ src/
 ├── assets/           # Static assets (logos, icons)
 └── App.jsx          # Main app component with routing
 ```
-
-## 🔧 Configuration Files
-
-**Key configurations:**
-- `vercel.json` - Deployment & routing config
-- `vite.config.js` - Vite build & PWA settings
-- `tailwind.config.js` - Tailwind CSS customization
-- `package.json` - Dependencies & scripts
-
-## 🛠️ Tech Stack
-
-| Kategori | Teknologi | Versi | Purpose |
-|----------|-----------|-------|---------|
-| **Framework** | React | 19.1.0 | UI library |
-| **Build Tool** | Vite | 6.x | Fast development & build |
-| **Styling** | Tailwind CSS | 4.1.8 | Utility-first CSS |
-| **Charts** | Recharts | 2.15.3 | Data visualization |
-| **Routing** | React Router | 7.6.2 | Client-side routing |
-| **HTTP Client** | Axios | 1.9.0 | API requests |
-| **Icons** | Lucide React | 0.513.0 | Modern icon set |
-| **Date Utils** | date-fns | 4.1.0 | Date formatting |
 
 ## ⚙️ Available Scripts
 
@@ -310,19 +278,15 @@ src/
 3. Import repository: `1naichii/air-quality-monitor-fe`
 4. Set environment variables production:
    ```env
-   # Required API Configuration
-   VITE_API_URL=https://your-backend-api.vercel.app/api
+   # Required API Configuration (NO VITE_ prefix - secure)
+   API_URL=https://your-backend-api.vercel.app/api
    API_KEY=your-production-api-key
-   WS_URL=wss://your-backend-api.vercel.app
    
-   # App Configuration
+   # App Configuration (VITE_ prefix - public)
    VITE_APP_NAME=Air Quality Monitor
-   
-   # Feature Controls (optional - default: true)
    VITE_ENABLE_PWA=true
    VITE_ENABLE_NOTIFICATIONS=true
    VITE_ENABLE_DARK_MODE=true
-   VITE_ENABLE_WEBSOCKET=true
    ```
 5. Deploy! (2-3 menit)
 
@@ -337,7 +301,7 @@ vercel --prod
 - 🌍 Live URL: `https://air-quality-monitor-fe.vercel.app`
 - ⚡ Performance: 211.67 kB gzipped
 - 📱 PWA: Installable di mobile/desktop
-- 🔄 Real-time: WebSocket ready
+- 🔄 Auto-refresh: Data polling setiap 30 detik
 
 ## 🚨 Troubleshooting
 
@@ -350,7 +314,7 @@ npm run lint   # Check code quality
 ```
 
 **Environment Variables Not Working:**
-- Ensure `VITE_` prefix on all variables
+- Ensure `VITE_` prefix hanya untuk public variables
 - Restart dev server: `npm run dev`
 - Debug: `console.log(import.meta.env)`
 
@@ -365,13 +329,7 @@ npm run lint   # Check code quality
 - Feature toggles use string comparison: `!== 'false'`
 - Set `VITE_ENABLE_FEATURE=false` to disable (any other value enables)
 - PWA disabled: Install prompt won't show, service worker still active
-- WebSocket disabled: Status shows "Disabled", no connection attempts
 - Notifications disabled: System won't render notification component
-
-**WebSocket Connection Issues:**
-- Use `wss://` for HTTPS environments
-- Check backend CORS configuration
-- Verify WebSocket endpoint accessibility
 
 **PWA Not Installing:**
 - Test on HTTPS (required for PWA)
@@ -391,7 +349,7 @@ npm run lint   # Check code quality
 - ✅ **PWA installation** on mobile/desktop
 - ✅ **Dark/Light mode** with system preference
 - ✅ **Responsive design** for all screen sizes
-- ✅ **WebSocket real-time updates**
+- ✅ **Auto-refresh polling** for latest sensor data
 - ✅ **Chart visualization** with Recharts
 - ✅ **Notification system** for air quality alerts
 - ✅ **Service Worker caching** for offline support

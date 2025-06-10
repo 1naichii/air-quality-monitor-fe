@@ -23,6 +23,20 @@ export const sensorAPI = {
     }
   },
 
+  // Get latest sensor data since a specific timestamp
+  getLatestSensorData: async (sinceTimestamp = null) => {
+    try {
+      const url = sinceTimestamp 
+        ? `/sensor/mq135/latest?since=${encodeURIComponent(sinceTimestamp)}`
+        : '/sensor/mq135/latest'
+      const response = await api.get(url)
+      return response.data
+    } catch (error) {
+      console.error('Error fetching latest sensor data:', error)
+      throw error
+    }
+  },
+
   // Send new sensor data (for testing)
   createSensorData: async (data) => {
     try {
