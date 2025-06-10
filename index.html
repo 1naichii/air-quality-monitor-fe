@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    
+    <!-- Favicon and Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/pwa-512x512.png" />
+    <link rel="shortcut icon" href="/pwa-192x192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Viewport and Basic Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+    <meta name="googlebot" content="index, follow" />
+    
+    <!-- SEO Meta Tags -->
+    <title>Air Quality Monitor - Monitor Kualitas Udara Real-Time | AQI Indonesia</title>
+    <meta name="description" content="Aplikasi monitoring kualitas udara real-time menggunakan sensor MQ135. Pantau AQI (Air Quality Index), polusi udara, dan dapatkan notifikasi peringatan untuk lingkungan yang lebih sehat." />
+    <meta name="keywords" content="air quality monitor, kualitas udara, AQI, air quality index, sensor MQ135, monitoring udara, polusi udara, lingkungan sehat, real-time monitoring, Indonesia" />
+    <meta name="author" content="Air Quality Monitor" />
+    <meta name="language" content="Indonesian" />
+    <meta name="geo.region" content="ID" />
+    <meta name="geo.country" content="Indonesia" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Air Quality Monitor - Monitor Kualitas Udara Real-Time" />
+    <meta property="og:description" content="Aplikasi monitoring kualitas udara real-time menggunakan sensor MQ135. Pantau AQI dan dapatkan notifikasi peringatan untuk lingkungan yang lebih sehat." />
+    <meta property="og:image" content="/pwa-512x512.png" />
+    <meta property="og:url" content="/" />
+    <meta property="og:site_name" content="Air Quality Monitor" />
+    <meta property="og:locale" content="id_ID" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Air Quality Monitor - Monitor Kualitas Udara Real-Time" />
+    <meta name="twitter:description" content="Aplikasi monitoring kualitas udara real-time menggunakan sensor MQ135. Pantau AQI dan lingkungan yang lebih sehat." />
+    <meta name="twitter:image" content="/pwa-512x512.png" />
+    
+    <!-- PWA and Mobile -->
+    <meta name="theme-color" content="#3b82f6" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1e293b" media="(prefers-color-scheme: dark)" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Air Quality Monitor" />
+    
+    <!-- Performance and Security -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="format-detection" content="telephone=no" />
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Air Quality Monitor",
+      "description": "Aplikasi monitoring kualitas udara real-time menggunakan sensor MQ135",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "IDR"
+      },
+      "featureList": [
+        "Real-time air quality monitoring",
+        "AQI (Air Quality Index) tracking",
+        "Pollution alerts and notifications",
+        "Historical data visualization",
+        "Mobile-friendly interface"
+      ]
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

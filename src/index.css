@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+/* Inter font family for modern typography */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* CSS Variables for consistent theming */
+:root {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  
+  /* Light mode colors */
+  --color-primary: #3b82f6;
+  --color-primary-dark: #1d4ed8;
+  --color-background: #ffffff;
+  --color-surface: #f8fafc;
+  --color-text: #1f2937;
+  --color-text-secondary: #6b7280;
+  
+  color-scheme: light dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Light mode explicit */
+.light {
+  --color-background: #ffffff;
+  --color-surface: #f8fafc;
+  --color-text: #1f2937;
+  --color-text-secondary: #6b7280;
+}
+
+[data-theme="light"] {
+  --color-background: #ffffff;
+  --color-surface: #f8fafc;
+  --color-text: #1f2937;
+  --color-text-secondary: #6b7280;
+}
+
+/* Dark mode */
+.dark {
+  --color-background: #0f172a;
+  --color-surface: #1e293b;
+  --color-text: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+}
+
+[data-theme="dark"] {
+  --color-background: #0f172a;
+  --color-surface: #1e293b;
+  --color-text: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+}
+
+/* Base styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Ensure body follows light mode changes */
+.light body,
+html.light body,
+[data-theme="light"] body {
+  background: #ffffff !important;
+  color: #1f2937 !important;
+}
+
+/* Ensure body follows dark mode changes */
+.dark body,
+html.dark body,
+[data-theme="dark"] body {
+  background: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+html.dark {
+  background: #0f172a;
+  color: #f1f5f9;
+}
+
+html.light {
+  background: #ffffff;
+  color: #1f2937;
+}
+
+/* Glass effect utility */
+.glass-effect {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .glass-effect {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(55, 65, 81, 0.3);
+}
+
+/* Custom shadows */
+.shadow-soft {
+  box-shadow: 0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04);
+}
+
+.shadow-medium {
+  box-shadow: 0 4px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { 
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+}
+
+/* Animation utilities */
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s ease-out;
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s ease-in-out infinite;
+}
