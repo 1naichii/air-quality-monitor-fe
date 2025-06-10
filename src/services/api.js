@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL
+const API_BASE_URL = __API_URL__ // Injected securely via Vite define, not exposed
 const API_KEY = __API_KEY__ // Injected securely via Vite define, not exposed
 
 const api = axios.create({

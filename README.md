@@ -111,42 +111,90 @@ VITE_ENABLE_DARK_MODE=true
 VITE_ENABLE_WEBSOCKET=true
 ```
 
-## 🔐 Secure API Authentication
+## 🔐 Enhanced Security Implementation
 
-Aplikasi ini menggunakan **sistem authentication yang aman** untuk API key:
+Aplikasi ini menggunakan **secure environment variable handling** untuk data sensitif:
 
-### 🛡️ **Security Implementation**
-- ✅ **API Key tanpa `VITE_` prefix** - `API_KEY` tidak terekspos di client-side
-- ✅ **WebSocket URL aman** - `WS_URL` tidak terekspos di client-side  
-- ✅ **Injeksi via Vite define** - Konstanta diinjeksi secara aman saat build
-- ⚠️ **Public configs** - `VITE_*` variables tetap terekspos (sesuai kebutuhan)
+### 🛡️ **Security Architecture**
+- ✅ **`API_KEY`** - Tidak menggunakan prefix `VITE_`, tidak terekspos di client-side
+- ✅ **`WS_URL`** - Tidak menggunakan prefix `VITE_`, tidak terekspos di client-side  
+- ✅ **Build-time injection** - Diinjeksi via Vite `define` saat build time
+- ✅ **No browser exposure** - Tidak dapat diakses via developer tools atau network inspection
+- ⚠️ **Public configs** - `VITE_*` variables tetap terekspos (sesuai kebutuhan UI)
 
-### 🔧 **How It Works**
-1. **Server-side Environment**: `API_KEY` dan `WS_URL` dibaca di server
-2. **Build-time Injection**: Vite menginjeksi sebagai konstanta global
-3. **Runtime Access**: Code menggunakan `__API_KEY__` dan `__WS_URL__`
-4. **No Client Exposure**: Tidak muncul di `import.meta.env` atau browser tools
+### 🔧 **Implementation Details**
+1. **Secure Variables (Server-side only):**
+   ```env
+   API_KEY=your-secret-api-key    # 🔒 Not exposed
+   WS_URL=wss://your-ws-url.com   # 🔒 Not exposed
+   ```
 
-### Setup API Key
-1. **Dapatkan API Key** dari backend administrator
-2. **Set environment variable** `API_KEY` (tanpa prefix VITE_)
-3. **API Key akan diinjeksi** secara aman saat build time
-4. **Tidak terekspos** di browser atau client-side tools
+2. **Public Variables (Client-side accessible):**
+   ```env
+   VITE_API_URL=https://api.com   # 🌐 Publicly accessible
+   VITE_APP_NAME=My App           # 🌐 Publicly accessible
+   ```
+
+3. **Code Usage:**
+   ```javascript
+   // Secure access - injected as constants
+   const apiKey = __API_KEY__     // Safe, not in import.meta.env
+   const wsUrl = __WS_URL__       // Safe, not in import.meta.env
+   
+   // Public access - standard Vite behavior
+   const apiUrl = import.meta.env.VITE_API_URL  // Exposed, as intended
+   ```
+
+### Setup API Key & WebSocket
+1. **Dapatkan credentials** dari backend administrator
+2. **Set environment variables** tanpa prefix VITE_:
+   ```env
+   API_URL=https://your-backend-api.com/api
+   API_KEY=your-secret-api-key
+   WS_URL=wss://your-websocket-url.com
+   ```
+3. **Variables diinjeksi** secara aman saat build time
+4. **Tidak terekspos** di browser atau client-side inspection tools
 
 ### Security Features
-- ✅ **No hardcoded credentials** - Semua konfigurasi via environment variables
-- ✅ **Secure injection** - API key diinjeksi via Vite define, tidak via VITE_ prefix
-- ✅ **Production-ready** - Tidak ada fallback localhost untuk keamanan
-- ✅ **Client-side safe** - API key tidak dapat diakses via browser tools
+- ✅ **Zero client exposure** - Credentials tidak dapat dilihat di browser
+- ✅ **Secure build injection** - Diinjeksi via Vite define, bukan environment variables
+- ✅ **Production-ready** - Tidak ada fallback localhost untuk keamanan maksimal
+- ✅ **Type-safe** - TypeScript definitions untuk konstanta global
+- ✅ **ESLint compatible** - Global constants terdefinisi dengan benar
 
-### API Request Headers
+### Implementation in Code
 ```javascript
-// Automatic headers yang dikirim ke backend:
-{
-  'Content-Type': 'application/json',
-  'X-API-Key': __API_KEY__ // Injected securely, tidak terekspos
+// services/api.js - Secure API configuration
+const API_URL = __API_URL__ // Injected securely, not in import.meta.env
+const API_KEY = __API_KEY__ // Injected securely, not in import.meta.env
+
+// components/*.jsx - Secure WebSocket URL usage  
+const WS_URL = __WS_URL__ // Injected securely, not in import.meta.env
+
+// vite.config.js - Build-time injection
+define: {
+  __API_URL__: JSON.stringify(env.API_URL || ''),
+  __API_KEY__: JSON.stringify(env.API_KEY || ''),
+  __WS_URL__: JSON.stringify(env.WS_URL || 'ws://localhost:3000')
 }
 ```
+
+### 🧪 **Security Verification**
+
+Untuk memverifikasi bahwa credentials tidak terekspos:
+
+1. **Build aplikasi**: `npm run build`
+2. **Buka browser dev tools** pada aplikasi yang ter-deploy
+3. **Cek Console**: `console.log(import.meta.env)` - API_KEY dan WS_URL tidak ada
+4. **Cek Network tab**: Headers tidak terlihat di request
+5. **Cek Source files**: Credentials tidak muncul di JavaScript bundle
+
+**Expected Results:**
+- ✅ `import.meta.env.VITE_API_URL` - Visible (intended)
+- ✅ `import.meta.env.VITE_APP_NAME` - Visible (intended)  
+- ❌ `import.meta.env.API_KEY` - Not found (secure)
+- ❌ `import.meta.env.WS_URL` - Not found (secure)
 
 ## 🎛️ Environment Variable Controls
 

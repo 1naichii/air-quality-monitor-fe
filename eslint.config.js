@@ -9,7 +9,13 @@ export default [
     files: ['**/*.{js,jsx}'],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        // Add Vite injected global constants
+        __API_KEY__: 'readonly',
+        __WS_URL__: 'readonly',
+        __API_URL__: 'readonly'
+      },
       parserOptions: {
         ecmaVersion: 'latest',
         ecmaFeatures: { jsx: true },
