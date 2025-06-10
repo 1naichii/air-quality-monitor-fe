@@ -29,18 +29,17 @@ const Header = ({ darkMode, toggleDarkMode }) => {
                 Real-time IoT Monitoring
               </p>
             </div>
-          </div>          <div className="flex items-center space-x-2 sm:space-x-4">
-            {enableDarkMode && (
+          </div>          <div className="flex items-center space-x-2 sm:space-x-4">            {enableDarkMode && (
                 <button
                   onClick={toggleDarkMode}
-                  className={`p-2 rounded-lg ${darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'} transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
+                  className={`p-3 sm:p-2 rounded-lg ${darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'} transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
                   aria-label="Toggle dark mode"
                   title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
                 >
                   {darkMode ? (
-                  <Sun className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500" />
+                  <Sun className="h-5 w-5 sm:h-5 sm:w-5 text-yellow-500" />
                 ) : (
-                  <Moon className={`h-4 w-4 sm:h-5 sm:w-5 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`} />
+                  <Moon className={`h-5 w-5 sm:h-5 sm:w-5 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`} />
                 )}
               </button>
               )}
