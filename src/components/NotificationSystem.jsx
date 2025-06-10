@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { CheckCircle, AlertCircle, Info, X } from 'lucide-react'
 
 const NotificationSystem = () => {
   const [notifications, setNotifications] = useState([])
+  const removeNotification = useCallback((id) => {
+    setNotifications(prev => prev.filter(n => n.id !== id))
+  }, [])
 
-  const addNotification = (message, type = 'info', duration = 5000) => {
+  const addNotification = useCallback((message, type = 'info', duration = 5000) => {
     const id = Date.now()
     const notification = { id, message, type, duration }
     
@@ -15,11 +18,7 @@ const NotificationSystem = () => {
         removeNotification(id)
       }, duration)
     }
-  }
-
-  const removeNotification = (id) => {
-    setNotifications(prev => prev.filter(n => n.id !== id))
-  }
+  }, [removeNotification])
 
   const getIcon = (type) => {
     switch (type) {
@@ -52,14 +51,13 @@ const NotificationSystem = () => {
           : 'bg-blue-50 border-blue-200 text-blue-800'
     }
   }
-
   // Expose addNotification globally
   useEffect(() => {
     window.showNotification = addNotification
     return () => {
       delete window.showNotification
     }
-  }, [])
+  }, [addNotification])
 
   return (
     <div className="fixed top-4 right-4 z-50 space-y-2 max-w-sm">

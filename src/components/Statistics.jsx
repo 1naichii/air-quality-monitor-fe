@@ -40,8 +40,8 @@ const Statistics = ({ data, darkMode }) => {
       border: darkMode ? "border-gray-700" : "border-gray-200",
       icon: darkMode ? "text-gray-400" : "text-gray-600",
       accent: darkMode ? "bg-gray-700/50" : "bg-gray-100"
-    }
-  }
+    }  }
+  // eslint-disable-next-line no-unused-vars
   const StatCard = ({ icon: Icon, title, value, subtitle, colorScheme, trend = null }) => (
     <div className={`card-hover glass-effect border ${colorScheme.border} rounded-xl p-5 sm:p-6 shadow-soft`}>
       <div className="flex items-center justify-between mb-4">

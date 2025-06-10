@@ -10,18 +10,16 @@ const WebSocketStatus = () => {
     let ws = null
     let reconnectTimeout = null
 
-    const connect = () => {
-      try {
+    const connect = () => {      try {
         setWsStatus('connecting')
         ws = new WebSocket(WS_URL)
-
+        
         ws.onopen = () => {
           setWsStatus('connected')
           console.log('WebSocket connected')
         }
-
-        ws.onmessage = (event) => {
-          const message = JSON.parse(event.data)
+        
+        ws.onmessage = () => {
           setLastMessage(new Date())
         }
 
