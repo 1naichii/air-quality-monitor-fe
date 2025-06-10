@@ -1,6 +1,6 @@
-import { Wifi, WifiOff, Wind, Moon, Sun } from 'lucide-react'
+import { Wind, Moon, Sun } from 'lucide-react'
 
-const Header = ({ isOnline, darkMode, toggleDarkMode }) => {
+const Header = ({ darkMode, toggleDarkMode }) => {
   const appName = import.meta.env.VITE_APP_NAME || 'Air Quality Monitor'
   const enableDarkMode = import.meta.env.VITE_ENABLE_DARK_MODE !== 'false'
   
@@ -30,17 +30,7 @@ const Header = ({ isOnline, darkMode, toggleDarkMode }) => {
               </p>
             </div>
           </div>          <div className="flex items-center space-x-2 sm:space-x-4">
-            {isOnline ? (
-              <div className={`flex items-center space-x-1 sm:space-x-2 ${darkMode ? 'text-green-400' : 'text-green-600'}`}>
-                <Wifi className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span className="text-xs sm:text-sm font-medium hidden md:block">Online</span>
-              </div>
-            ) : (
-              <div className={`flex items-center space-x-1 sm:space-x-2 ${darkMode ? 'text-red-400' : 'text-red-600'}`}>
-                <WifiOff className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span className="text-xs sm:text-sm font-medium hidden md:block">Offline</span>
-              </div>            )}
-              {enableDarkMode && (
+            {enableDarkMode && (
                 <button
                   onClick={toggleDarkMode}
                   className={`p-2 rounded-lg ${darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'} transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}

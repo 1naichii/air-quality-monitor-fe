@@ -6,7 +6,6 @@ import PWAInstallPrompt from './components/PWAInstallPrompt'
 import NotificationSystem from './components/NotificationSystem'
 
 function App() {
-  const [isOnline, setIsOnline] = useState(navigator.onLine)
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('darkMode')
     return saved ? JSON.parse(saved) : window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -42,19 +41,6 @@ function App() {
     setDarkMode(newDarkMode)
   }
 
-  useEffect(() => {
-    const handleOnline = () => setIsOnline(true)
-    const handleOffline = () => setIsOnline(false)
-
-    window.addEventListener('online', handleOnline)
-    window.addEventListener('offline', handleOffline)
-
-    return () => {
-      window.removeEventListener('online', handleOnline)
-      window.removeEventListener('offline', handleOffline)
-    }
-  }, [])
-
   return (
     <Router>
       <div 
@@ -67,7 +53,7 @@ function App() {
         }}
         className={`${darkMode ? 'dark' : ''}`}
       >
-        <Header isOnline={isOnline} darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+        <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
         <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-7xl">
           <Routes>
             <Route path="/" element={<Dashboard key={`dashboard-${darkMode}`} darkMode={darkMode} />} />
