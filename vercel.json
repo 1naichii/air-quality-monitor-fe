@@ -8,12 +8,10 @@
     "VITE_API_URL": "",
     "VITE_WS_URL": "",
     "VITE_APP_NAME": "Air Quality Monitor"
-  },
-  "redirects": [
+  },  "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/index.html",
-      "permanent": false
+      "destination": "/index.html"
     }
   ]
 }
