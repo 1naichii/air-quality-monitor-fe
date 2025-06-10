@@ -4,8 +4,10 @@ import { Download, X } from 'lucide-react'
 const PWAInstallPrompt = ({ darkMode }) => {
   const [deferredPrompt, setDeferredPrompt] = useState(null)
   const [showPrompt, setShowPrompt] = useState(false)
-
+  const enablePWA = import.meta.env.VITE_ENABLE_PWA !== 'false'
   useEffect(() => {
+    if (!enablePWA) return
+    
     const handler = (e) => {
       e.preventDefault()
       setDeferredPrompt(e)
@@ -17,7 +19,7 @@ const PWAInstallPrompt = ({ darkMode }) => {
     return () => {
       window.removeEventListener('beforeinstallprompt', handler)
     }
-  }, [])
+  }, [enablePWA])
 
   const handleInstall = async () => {
     if (!deferredPrompt) return
@@ -36,9 +38,8 @@ const PWAInstallPrompt = ({ darkMode }) => {
     // Remember user dismissed, don't show again for this session
     sessionStorage.setItem('pwa-prompt-dismissed', 'true')
   }
-
-  // Don't show if already dismissed or not available
-  if (!showPrompt || sessionStorage.getItem('pwa-prompt-dismissed')) {
+  // Don't show if PWA disabled, already dismissed or not available
+  if (!enablePWA || !showPrompt || sessionStorage.getItem('pwa-prompt-dismissed')) {
     return null
   }
 

@@ -4,8 +4,13 @@ import { Wifi, WifiOff, Radio } from 'lucide-react'
 const WebSocketStatus = () => {
   const [wsStatus, setWsStatus] = useState('disconnected') // disconnected, connecting, connected
   const [lastMessage, setLastMessage] = useState(null)
-
   useEffect(() => {
+    const enableWebSocket = import.meta.env.VITE_ENABLE_WEBSOCKET !== 'false'
+    if (!enableWebSocket) {
+      setWsStatus('disabled')
+      return
+    }
+    
     const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:3000'
     let ws = null
     let reconnectTimeout = null
@@ -52,11 +57,11 @@ const WebSocketStatus = () => {
       }
     }
   }, [])
-
   const getStatusColor = () => {
     switch (wsStatus) {
       case 'connected': return 'text-green-600'
       case 'connecting': return 'text-yellow-600'
+      case 'disabled': return 'text-gray-500'
       default: return 'text-red-600'
     }
   }
@@ -65,6 +70,7 @@ const WebSocketStatus = () => {
     switch (wsStatus) {
       case 'connected': return <Radio className="h-4 w-4" />
       case 'connecting': return <Wifi className="h-4 w-4 animate-pulse" />
+      case 'disabled': return <WifiOff className="h-4 w-4 opacity-50" />
       default: return <WifiOff className="h-4 w-4" />
     }
   }
@@ -73,6 +79,7 @@ const WebSocketStatus = () => {
     switch (wsStatus) {
       case 'connected': return 'Live'
       case 'connecting': return 'Connecting...'
+      case 'disabled': return 'Disabled'
       default: return 'Offline'
     }
   }

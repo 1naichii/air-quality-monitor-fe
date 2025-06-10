@@ -44,9 +44,11 @@ const Dashboard = ({ darkMode }) => {
     const interval = setInterval(fetchData, 30000)
     
     return () => clearInterval(interval)
-  }, [])
-  // WebSocket connection for real-time updates
+  }, [])  // WebSocket connection for real-time updates
   useEffect(() => {
+    const enableWebSocket = import.meta.env.VITE_ENABLE_WEBSOCKET !== 'false'
+    if (!enableWebSocket) return
+    
     const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:3000'
     
     try {

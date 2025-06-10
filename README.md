@@ -104,10 +104,11 @@ VITE_API_KEY=your-api-key-here
 VITE_WS_URL=ws://localhost:3000
 VITE_APP_NAME=Air Quality Monitor
 
-# Optional Features
+# Feature Controls
 VITE_ENABLE_PWA=true
 VITE_ENABLE_NOTIFICATIONS=true
 VITE_ENABLE_DARK_MODE=true
+VITE_ENABLE_WEBSOCKET=true
 ```
 
 ## 🔐 API Authentication
@@ -131,6 +132,50 @@ Aplikasi ini menggunakan **API Key** untuk mengakses backend secara aman:
   'Content-Type': 'application/json',
   'X-API-Key': 'your-api-key-here'  // Jika VITE_API_KEY diset
 }
+```
+
+## 🎛️ Environment Variable Controls
+
+Aplikasi ini mendukung berbagai environment variables untuk mengontrol fitur:
+
+### 📱 **Feature Toggle Variables**
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `VITE_ENABLE_PWA` | `true` | Enable/disable PWA functionality & install prompt |
+| `VITE_ENABLE_NOTIFICATIONS` | `true` | Enable/disable notification system |
+| `VITE_ENABLE_DARK_MODE` | `true` | Show/hide dark mode toggle button |
+| `VITE_ENABLE_WEBSOCKET` | `true` | Enable/disable real-time WebSocket connection |
+
+### 🎨 **Customization Variables**
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `VITE_APP_NAME` | `Air Quality Monitor` | Application name (shown in header & PWA) |
+| `VITE_APP_VERSION` | `1.0.0` | Application version |
+| `VITE_APP_URL` | `http://localhost:5173` | Base application URL |
+
+### 🔧 **Usage Examples**
+
+**Disable PWA untuk environment tertentu:**
+```env
+VITE_ENABLE_PWA=false
+```
+
+**Custom app name:**
+```env
+VITE_APP_NAME=My Custom Air Monitor
+```
+
+**Disable WebSocket untuk testing:**
+```env
+VITE_ENABLE_WEBSOCKET=false
+```
+
+**Production-only notifications:**
+```env
+VITE_ENABLE_NOTIFICATIONS=true  # Production
+VITE_ENABLE_NOTIFICATIONS=false # Development
 ```
 
 ## 📁 Project Structure
@@ -203,10 +248,19 @@ src/
 3. Import repository: `1naichii/air-quality-monitor-fe`
 4. Set environment variables production:
    ```env
+   # Required API Configuration
    VITE_API_URL=https://your-backend-api.vercel.app/api
    VITE_API_KEY=your-production-api-key
    VITE_WS_URL=wss://your-backend-api.vercel.app
+   
+   # App Configuration
    VITE_APP_NAME=Air Quality Monitor
+   
+   # Feature Controls (optional - default: true)
+   VITE_ENABLE_PWA=true
+   VITE_ENABLE_NOTIFICATIONS=true
+   VITE_ENABLE_DARK_MODE=true
+   VITE_ENABLE_WEBSOCKET=true
    ```
 5. Deploy! (2-3 menit)
 
@@ -243,6 +297,13 @@ npm run lint   # Check code quality
 - Check backend logs for API key validation errors
 - Ensure API key has proper permissions
 - Test API endpoints with tools like Postman
+
+**Feature Control Issues:**
+- Feature toggles use string comparison: `!== 'false'`
+- Set `VITE_ENABLE_FEATURE=false` to disable (any other value enables)
+- PWA disabled: Install prompt won't show, service worker still active
+- WebSocket disabled: Status shows "Disabled", no connection attempts
+- Notifications disabled: System won't render notification component
 
 **WebSocket Connection Issues:**
 - Use `wss://` for HTTPS environments

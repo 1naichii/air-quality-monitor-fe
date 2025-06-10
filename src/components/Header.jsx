@@ -2,6 +2,9 @@ import { Wifi, WifiOff, Wind, Moon, Sun } from 'lucide-react'
 import WebSocketStatus from './WebSocketStatus'
 
 const Header = ({ isOnline, darkMode, toggleDarkMode }) => {
+  const appName = import.meta.env.VITE_APP_NAME || 'Air Quality Monitor'
+  const enableDarkMode = import.meta.env.VITE_ENABLE_DARK_MODE !== 'false'
+  
   return (
     <header 
       className={`sticky top-0 z-50 border-b backdrop-blur-md ${
@@ -21,15 +24,14 @@ const Header = ({ isOnline, darkMode, toggleDarkMode }) => {
               <Wind className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
             </div>            <div>
               <h1 className={`text-lg sm:text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                Air Quality Monitor
+                {appName}
               </h1>
               <p className={`text-xs sm:text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                 Real-time IoT Monitoring
               </p>
             </div>
           </div>
-          
-          <div className="flex items-center space-x-2 sm:space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
             <WebSocketStatus />
               {isOnline ? (
               <div className={`flex items-center space-x-1 sm:space-x-2 ${darkMode ? 'text-green-400' : 'text-green-600'}`}>
@@ -40,20 +42,21 @@ const Header = ({ isOnline, darkMode, toggleDarkMode }) => {
               <div className={`flex items-center space-x-1 sm:space-x-2 ${darkMode ? 'text-red-400' : 'text-red-600'}`}>
                 <WifiOff className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span className="text-xs sm:text-sm font-medium hidden md:block">Offline</span>
-              </div>
-            )}
-              <button
-              onClick={toggleDarkMode}
-              className={`p-2 rounded-lg ${darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'} transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
-              aria-label="Toggle dark mode"
-              title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-            >
-              {darkMode ? (
-                <Sun className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500" />
-              ) : (
-                <Moon className={`h-4 w-4 sm:h-5 sm:w-5 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`} />
+              </div>            )}
+              {enableDarkMode && (
+                <button
+                  onClick={toggleDarkMode}
+                  className={`p-2 rounded-lg ${darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'} transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
+                  aria-label="Toggle dark mode"
+                  title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+                >
+                  {darkMode ? (
+                  <Sun className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500" />
+                ) : (
+                  <Moon className={`h-4 w-4 sm:h-5 sm:w-5 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`} />
+                )}
+              </button>
               )}
-            </button>
           </div>
         </div>
       </div>

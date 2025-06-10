@@ -3,6 +3,8 @@ import { CheckCircle, AlertCircle, Info, X } from 'lucide-react'
 
 const NotificationSystem = () => {
   const [notifications, setNotifications] = useState([])
+  const enableNotifications = import.meta.env.VITE_ENABLE_NOTIFICATIONS !== 'false'
+  
   const removeNotification = useCallback((id) => {
     setNotifications(prev => prev.filter(n => n.id !== id))
   }, [])
@@ -56,8 +58,12 @@ const NotificationSystem = () => {
     window.showNotification = addNotification
     return () => {
       delete window.showNotification
-    }
-  }, [addNotification])
+    }  }, [addNotification])
+
+  // Don't render if notifications are disabled
+  if (!enableNotifications) {
+    return null
+  }
 
   return (
     <div className="fixed top-4 right-4 z-50 space-y-2 max-w-sm">
