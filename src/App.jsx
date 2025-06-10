@@ -3,9 +3,7 @@ import { useState, useEffect } from 'react'
 import Dashboard from './components/Dashboard'
 import Header from './components/Header'
 import PWAInstallPrompt from './components/PWAInstallPrompt'
-import DevTools from './components/DevTools'
 import NotificationSystem from './components/NotificationSystem'
-import './App.css'
 
 function App() {
   const [isOnline, setIsOnline] = useState(navigator.onLine)
@@ -13,7 +11,6 @@ function App() {
     const saved = localStorage.getItem('darkMode')
     return saved ? JSON.parse(saved) : window.matchMedia('(prefers-color-scheme: dark)').matches
   })
-  const [forceRender, setForceRender] = useState(0) // For forcing re-render
 
   // Apply dark mode on mount and when changed
   useEffect(() => {
@@ -43,7 +40,6 @@ function App() {
   const toggleDarkMode = () => {
     const newDarkMode = !darkMode
     setDarkMode(newDarkMode)
-    setForceRender(prev => prev + 1) // Force re-render
   }
 
   useEffect(() => {
@@ -62,7 +58,7 @@ function App() {
   return (
     <Router>
       <div 
-        key={`app-${darkMode}-${forceRender}`} 
+        key={`app-${darkMode}`} 
         style={{
           minHeight: '100vh',
           backgroundColor: darkMode ? '#0f172a' : '#f8fafc',
@@ -79,8 +75,6 @@ function App() {
         </main>
         <NotificationSystem />
         <PWAInstallPrompt darkMode={darkMode} />
-        {/* DevTools only for development testing */}
-        {/* <DevTools /> */}
       </div>
     </Router>
   )
