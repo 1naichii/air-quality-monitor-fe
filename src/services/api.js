@@ -1,13 +1,13 @@
 import axios from 'axios'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
-const API_KEY = import.meta.env.VITE_API_KEY || 'oxF5Wdpx2KuRi5QK0OmIqJgHz4OMzAkz.Cnkzj9Qjd9SdREw3V'
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
+const API_KEY = import.meta.env.VITE_API_KEY
 
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
-    'X-API-Key': API_KEY
+    ...(API_KEY && { 'X-API-Key': API_KEY })
   }
 })
 
