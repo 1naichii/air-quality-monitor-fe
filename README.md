@@ -23,6 +23,39 @@
 - 📈 **Historical Analytics** - Tracking dan analisis data historis
 - ⚡ **Performance Optimized** - Bundle size 211.67 kB gzipped
 - 🌐 **SEO Ready** - Meta tags dan structured data lengkap
+- 🔐 **Secure API Access** - API key authentication untuk backend integration
+
+## 🔗 Backend Integration
+
+### Endpoint Requirements
+Frontend ini terhubung dengan backend API yang memerlukan:
+
+| Endpoint | Method | Auth | Purpose |
+|----------|--------|------|---------|
+| `/api/sensor/mq135` | GET | API Key | Ambil semua data sensor |
+| `/api/sensor/mq135` | POST | API Key | Kirim data sensor baru |
+| WebSocket `/` | WS | - | Real-time data updates |
+
+### API Response Format
+```json
+{
+  "data": [
+    {
+      "id": "uuid",
+      "timestamp": "2025-06-11T10:30:00Z",
+      "ppm": 350,
+      "aqi": 75,
+      "temperature": 28.5,
+      "humidity": 65.2
+    }
+  ],
+  "meta": {
+    "total": 1000,
+    "page": 1,
+    "limit": 50
+  }
+}
+```
 
 ## 🛠️ Teknologi
 
@@ -67,6 +100,7 @@ npm run dev
 ```env
 # API Configuration
 VITE_API_URL=http://localhost:3000/api
+VITE_API_KEY=your-api-key-here
 VITE_WS_URL=ws://localhost:3000
 VITE_APP_NAME=Air Quality Monitor
 
@@ -74,6 +108,29 @@ VITE_APP_NAME=Air Quality Monitor
 VITE_ENABLE_PWA=true
 VITE_ENABLE_NOTIFICATIONS=true
 VITE_ENABLE_DARK_MODE=true
+```
+
+## 🔐 API Authentication
+
+Aplikasi ini menggunakan **API Key** untuk mengakses backend secara aman:
+
+### Setup API Key
+1. **Dapatkan API Key** dari backend administrator
+2. **Set environment variable** `VITE_API_KEY`
+3. **API Key akan dikirim** di header `X-API-Key` pada setiap request
+
+### Security Features
+- ✅ **No hardcoded credentials** - Semua konfigurasi via environment variables
+- ✅ **Conditional API key** - Header hanya ditambahkan jika API key tersedia
+- ✅ **Production-ready** - Tidak ada fallback localhost untuk keamanan
+
+### API Request Headers
+```javascript
+// Automatic headers yang dikirim ke backend:
+{
+  'Content-Type': 'application/json',
+  'X-API-Key': 'your-api-key-here'  // Jika VITE_API_KEY diset
+}
 ```
 
 ## 📁 Project Structure
@@ -88,7 +145,7 @@ src/
 │   ├── Statistics.jsx  # Statistical analysis display
 │   └── ...             # Other components
 ├── services/
-│   └── api.js         # HTTP client & WebSocket configuration
+│   └── api.js         # HTTP client & API key authentication
 ├── utils/
 │   └── aqi.js        # AQI calculation & color utilities
 ├── assets/           # Static assets (logos, icons)
@@ -147,6 +204,7 @@ src/
 4. Set environment variables production:
    ```env
    VITE_API_URL=https://your-backend-api.vercel.app/api
+   VITE_API_KEY=your-production-api-key
    VITE_WS_URL=wss://your-backend-api.vercel.app
    VITE_APP_NAME=Air Quality Monitor
    ```
@@ -179,6 +237,12 @@ npm run lint   # Check code quality
 - Ensure `VITE_` prefix on all variables
 - Restart dev server: `npm run dev`
 - Debug: `console.log(import.meta.env)`
+
+**API Authentication Issues:**
+- Verify `VITE_API_KEY` is correctly set
+- Check backend logs for API key validation errors
+- Ensure API key has proper permissions
+- Test API endpoints with tools like Postman
 
 **WebSocket Connection Issues:**
 - Use `wss://` for HTTPS environments
