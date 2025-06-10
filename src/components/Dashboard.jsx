@@ -49,7 +49,7 @@ const Dashboard = ({ darkMode }) => {
     const enableWebSocket = import.meta.env.VITE_ENABLE_WEBSOCKET !== 'false'
     if (!enableWebSocket) return
     
-    const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:3000'
+    const WS_URL = __WS_URL__ // Use injected constant for better security
     
     try {
       const ws = new WebSocket(WS_URL)

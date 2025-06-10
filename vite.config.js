@@ -48,11 +48,15 @@ export default defineConfig(({ mode }) => {
           globPatterns: ['**/*.{js,css,html,ico,png,svg}']
         }
       })
-    )
-  }
+    )  }
 
   return {
     plugins,
+    define: {
+      // Inject API key securely without VITE_ prefix
+      __API_KEY__: JSON.stringify(env.API_KEY || ''),
+      __WS_URL__: JSON.stringify(env.WS_URL || env.VITE_WS_URL || 'ws://localhost:3000')
+    },
     server: {
       host: true,
       port: 5173

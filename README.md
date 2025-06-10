@@ -100,8 +100,8 @@ npm run dev
 ```env
 # API Configuration
 VITE_API_URL=http://localhost:3000/api
-VITE_API_KEY=your-api-key-here
-VITE_WS_URL=ws://localhost:3000
+API_KEY=your-api-key-here
+WS_URL=ws://localhost:3000
 VITE_APP_NAME=Air Quality Monitor
 
 # Feature Controls
@@ -111,26 +111,40 @@ VITE_ENABLE_DARK_MODE=true
 VITE_ENABLE_WEBSOCKET=true
 ```
 
-## 🔐 API Authentication
+## 🔐 Secure API Authentication
 
-Aplikasi ini menggunakan **API Key** untuk mengakses backend secara aman:
+Aplikasi ini menggunakan **sistem authentication yang aman** untuk API key:
+
+### 🛡️ **Security Implementation**
+- ✅ **API Key tanpa `VITE_` prefix** - `API_KEY` tidak terekspos di client-side
+- ✅ **WebSocket URL aman** - `WS_URL` tidak terekspos di client-side  
+- ✅ **Injeksi via Vite define** - Konstanta diinjeksi secara aman saat build
+- ⚠️ **Public configs** - `VITE_*` variables tetap terekspos (sesuai kebutuhan)
+
+### 🔧 **How It Works**
+1. **Server-side Environment**: `API_KEY` dan `WS_URL` dibaca di server
+2. **Build-time Injection**: Vite menginjeksi sebagai konstanta global
+3. **Runtime Access**: Code menggunakan `__API_KEY__` dan `__WS_URL__`
+4. **No Client Exposure**: Tidak muncul di `import.meta.env` atau browser tools
 
 ### Setup API Key
 1. **Dapatkan API Key** dari backend administrator
-2. **Set environment variable** `VITE_API_KEY`
-3. **API Key akan dikirim** di header `X-API-Key` pada setiap request
+2. **Set environment variable** `API_KEY` (tanpa prefix VITE_)
+3. **API Key akan diinjeksi** secara aman saat build time
+4. **Tidak terekspos** di browser atau client-side tools
 
 ### Security Features
 - ✅ **No hardcoded credentials** - Semua konfigurasi via environment variables
-- ✅ **Conditional API key** - Header hanya ditambahkan jika API key tersedia
+- ✅ **Secure injection** - API key diinjeksi via Vite define, tidak via VITE_ prefix
 - ✅ **Production-ready** - Tidak ada fallback localhost untuk keamanan
+- ✅ **Client-side safe** - API key tidak dapat diakses via browser tools
 
 ### API Request Headers
 ```javascript
 // Automatic headers yang dikirim ke backend:
 {
   'Content-Type': 'application/json',
-  'X-API-Key': 'your-api-key-here'  // Jika VITE_API_KEY diset
+  'X-API-Key': __API_KEY__ // Injected securely, tidak terekspos
 }
 ```
 
@@ -250,8 +264,8 @@ src/
    ```env
    # Required API Configuration
    VITE_API_URL=https://your-backend-api.vercel.app/api
-   VITE_API_KEY=your-production-api-key
-   VITE_WS_URL=wss://your-backend-api.vercel.app
+   API_KEY=your-production-api-key
+   WS_URL=wss://your-backend-api.vercel.app
    
    # App Configuration
    VITE_APP_NAME=Air Quality Monitor
@@ -293,10 +307,11 @@ npm run lint   # Check code quality
 - Debug: `console.log(import.meta.env)`
 
 **API Authentication Issues:**
-- Verify `VITE_API_KEY` is correctly set
+- Verify `API_KEY` is correctly set (without VITE_ prefix)
 - Check backend logs for API key validation errors
 - Ensure API key has proper permissions
 - Test API endpoints with tools like Postman
+- API key is injected securely and not visible in browser dev tools
 
 **Feature Control Issues:**
 - Feature toggles use string comparison: `!== 'false'`

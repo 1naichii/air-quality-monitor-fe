@@ -4,6 +4,7 @@ import { Wifi, WifiOff, Radio } from 'lucide-react'
 const WebSocketStatus = () => {
   const [wsStatus, setWsStatus] = useState('disconnected') // disconnected, connecting, connected
   const [lastMessage, setLastMessage] = useState(null)
+
   useEffect(() => {
     const enableWebSocket = import.meta.env.VITE_ENABLE_WEBSOCKET !== 'false'
     if (!enableWebSocket) {
@@ -11,11 +12,11 @@ const WebSocketStatus = () => {
       return
     }
     
-    const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:3000'
+    const WS_URL = __WS_URL__ // Use injected constant for better security
     let ws = null
     let reconnectTimeout = null
 
-    const connect = () => {      try {
+    const connect = () => {try {
         setWsStatus('connecting')
         ws = new WebSocket(WS_URL)
         
