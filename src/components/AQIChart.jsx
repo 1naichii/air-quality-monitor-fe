@@ -2,6 +2,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { format } from 'date-fns'
 import { TrendingUp } from 'lucide-react'
 import { getAQIColor } from '../utils/aqi'
+import { useState, useEffect } from 'react'
 
 const AQIChart = ({ data, darkMode }) => {
   if (!data || data.length === 0) return null
@@ -21,9 +22,19 @@ const AQIChart = ({ data, darkMode }) => {
       color: getAQIColor(item.aqi)
     }))
 
-  // Chart responsif: stretch penuh jika data sedikit, scroll jika banyak
-  const shouldScroll = chartData.length >= 8 // Enable scroll jika 8+ data points
-  const minChartWidth = shouldScroll ? Math.max(600, chartData.length * 70) : '100%'
+  // Chart responsif yang lebih optimal untuk desktop
+  // Hanya scroll jika data point lebih dari yang bisa ditampung dengan nyaman
+  const shouldScroll = chartData.length > 12 // Threshold lebih tinggi untuk desktop
+  
+  // Width calculation yang selalu prioritaskan stretch full
+  const calculateChartWidth = () => {
+    if (!shouldScroll) return '100%' // Selalu stretch full untuk data ≤12
+    
+    // Hanya jika benar-benar banyak data, baru pakai scroll dengan width tetap
+    return chartData.length * 85 // 85px per data point untuk scroll mode
+  }
+  
+  const chartWidth = calculateChartWidth()
 
   // Reference lines for AQI categories
   const aqiThresholds = [    { value: 50, label: "Baik", color: "#22c55e" },
@@ -76,8 +87,8 @@ const AQIChart = ({ data, darkMode }) => {
         <div 
           className="h-80 sm:h-96 mb-4" 
           style={{ 
-            minWidth: shouldScroll ? minChartWidth : '100%',
-            width: shouldScroll ? minChartWidth : '100%'
+            minWidth: shouldScroll ? `${chartWidth}px` : '100%',
+            width: shouldScroll ? `${chartWidth}px` : '100%'
           }}
         >
           <ResponsiveContainer width="100%" height="100%">
