@@ -4,9 +4,11 @@ const Statistics = ({ data, darkMode }) => {
   if (!data || data.length === 0) return null
 
   const calculateStats = () => {
-    const aqiValues = data.map(item => item.aqi)
-    const latest = data[0]
-    const previous = data[1]
+    // Hanya gunakan 10 data terbaru untuk kalkulasi
+    const latestData = data.slice(0, 10)
+    const aqiValues = latestData.map(item => item.aqi)
+    const latest = latestData[0]
+    const previous = latestData[1]
     
     const avg = Math.round(aqiValues.reduce((sum, val) => sum + val, 0) / aqiValues.length)
     const max = Math.max(...aqiValues)
@@ -15,7 +17,7 @@ const Statistics = ({ data, darkMode }) => {
     const trend = previous ? latest.aqi - previous.aqi : 0
     const trendPercent = previous ? Math.round(((latest.aqi - previous.aqi) / previous.aqi) * 100) : 0
 
-    return { avg, max, min, trend, trendPercent, latest }
+    return { avg, max, min, trend, trendPercent, latest, dataCount: latestData.length }
   }
 
   const stats = calculateStats()
@@ -78,7 +80,7 @@ const Statistics = ({ data, darkMode }) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">        <StatCard
           icon={BarChart3}          title="Rata-rata AQI"
           value={stats.avg}
-          subtitle={`${data.length} pembacaan terakhir`}
+          subtitle={`${stats.dataCount} pembacaan terbaru`}
           colorScheme={{
             bg: darkMode ? "bg-blue-900/20" : "bg-blue-50",
             text: darkMode ? "text-blue-300" : "text-blue-700",

@@ -6,11 +6,13 @@ import { getAQIColor } from '../utils/aqi'
 const AQIChart = ({ data, darkMode }) => {
   if (!data || data.length === 0) return null
 
-  // Get more data points for scrollable chart
-  const maxDataPoints = data.length > 50 ? 50 : data.length
-  const chartData = data
-    .slice(-maxDataPoints)
-    .reverse() // Show chronological order
+  // Hanya ambil 10 data terbaru untuk chart
+  const maxDataPoints = 10
+  const latestData = data.slice(0, maxDataPoints) // Ambil 10 data terbaru
+  
+  const chartData = latestData
+    .slice()
+    .reverse() // Show chronological order (oldest to newest)
     .map(item => ({
       time: format(new Date(item.reading_time), 'HH:mm'),
       aqi: item.aqi,
@@ -19,9 +21,9 @@ const AQIChart = ({ data, darkMode }) => {
       color: getAQIColor(item.aqi)
     }))
 
-  // Calculate chart width based on data points
-  const minChartWidth = Math.max(800, chartData.length * 60) // Minimum 800px, or 60px per data point
-  const shouldScroll = chartData.length > 10 // Enable scroll if more than 10 data points
+  // Chart responsif: stretch penuh jika data sedikit, scroll jika banyak
+  const shouldScroll = chartData.length >= 8 // Enable scroll jika 8+ data points
+  const minChartWidth = shouldScroll ? Math.max(600, chartData.length * 70) : '100%'
 
   // Reference lines for AQI categories
   const aqiThresholds = [    { value: 50, label: "Baik", color: "#22c55e" },
@@ -62,7 +64,7 @@ const AQIChart = ({ data, darkMode }) => {
               </div>
             )}
           </div>          <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-            {chartData.length} pembacaan terakhir • Monitoring real-time
+            {chartData.length} dari 10 pembacaan terbaru • Monitoring real-time
             {shouldScroll && (
               <span className={`ml-2 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>
                 ← Scroll horizontal untuk melihat semua data →
@@ -74,8 +76,8 @@ const AQIChart = ({ data, darkMode }) => {
         <div 
           className="h-80 sm:h-96 mb-4" 
           style={{ 
-            minWidth: shouldScroll ? `${minChartWidth}px` : '100%',
-            width: shouldScroll ? `${minChartWidth}px` : '100%'
+            minWidth: shouldScroll ? minChartWidth : '100%',
+            width: shouldScroll ? minChartWidth : '100%'
           }}
         >
           <ResponsiveContainer width="100%" height="100%">
