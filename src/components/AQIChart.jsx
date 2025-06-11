@@ -24,12 +24,11 @@ const AQIChart = ({ data, darkMode }) => {
   const shouldScroll = chartData.length > 10 // Enable scroll if more than 10 data points
 
   // Reference lines for AQI categories
-  const aqiThresholds = [
-    { value: 50, label: "Good", color: "#22c55e" },
-    { value: 100, label: "Moderate", color: "#eab308" },
-    { value: 150, label: "USG", color: "#f97316" },
-    { value: 200, label: "Unhealthy", color: "#ef4444" },
-    { value: 300, label: "Very Unhealthy", color: "#a855f7" },
+  const aqiThresholds = [    { value: 50, label: "Baik", color: "#22c55e" },
+    { value: 100, label: "Sedang", color: "#eab308" },
+    { value: 150, label: "TSS", color: "#f97316" },
+    { value: 200, label: "Tidak Sehat", color: "#ef4444" },
+    { value: 300, label: "Sangat Tidak Sehat", color: "#a855f7" },
   ]
 
   const CustomTooltip = ({ active, payload }) => {
@@ -38,12 +37,11 @@ const AQIChart = ({ data, darkMode }) => {
       return (        <div className={`glass-effect border ${darkMode ? 'border-gray-700/50' : 'border-gray-200/50'} rounded-xl p-4 shadow-medium`}>
           <p className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-900'} mb-2`}>{data.fullTime}</p>
           <div className="space-y-1">
-            <p className="flex items-center justify-between">
-              <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>AQI:</span>
+            <p className="flex items-center justify-between">              <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>AQI:</span>
               <span className={`font-bold ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>{data.aqi}</span>
             </p>
             <p className="flex items-center justify-between">
-              <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Raw Value:</span>
+              <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Nilai Raw:</span>
               <span className={`font-semibold ${darkMode ? 'text-gray-100' : 'text-gray-900'}`}>{data.raw}</span>
             </p>
           </div>
@@ -58,15 +56,13 @@ const AQIChart = ({ data, darkMode }) => {
       <div className="flex items-center justify-between mb-6">
         <div>          <div className="flex items-center space-x-2 mb-2">
             <TrendingUp className={`h-5 w-5 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`} />
-            <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>AQI Trend Analysis</h3>
-            {shouldScroll && (
-              <div className={`text-xs px-2 py-1 rounded-full ${darkMode ? 'bg-blue-900/50 text-blue-300' : 'bg-blue-100 text-blue-700'}`}>
-                Scrollable
+            <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Analisis Tren AQI</h3>
+            {shouldScroll && (              <div className={`text-xs px-2 py-1 rounded-full ${darkMode ? 'bg-blue-900/50 text-blue-300' : 'bg-blue-100 text-blue-700'}`}>
+                Dapat Discroll
               </div>
             )}
-          </div>
-          <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-            Last {chartData.length} readings • Real-time monitoring
+          </div>          <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+            {chartData.length} pembacaan terakhir • Monitoring real-time
             {shouldScroll && (
               <span className={`ml-2 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>
                 ← Scroll horizontal untuk melihat semua data →

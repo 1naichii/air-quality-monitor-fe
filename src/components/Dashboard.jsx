@@ -162,13 +162,12 @@ const Dashboard = ({ darkMode }) => {
     return (
       <div className="flex items-center justify-center min-h-64">
         <div className="text-center">
-          <AlertTriangle className="h-8 w-8 mx-auto text-red-600 mb-4" />
-          <p className="text-gray-600 mb-4">{error}</p>
+          <AlertTriangle className="h-8 w-8 mx-auto text-red-600 mb-4" />          <p className="text-gray-600 mb-4">{error}</p>
           <button
             onClick={fetchData}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
-            Try Again
+            Coba Lagi
           </button>
         </div>
       </div>
@@ -178,14 +177,12 @@ const Dashboard = ({ darkMode }) => {
   return (
     <div className={`space-y-8 animate-fade-in ${darkMode ? 'dark' : ''}`}>
       {/* Header with refresh button */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">        <div className="space-y-2">
-          <h2 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-            Air Quality Dashboard
-          </h2>          {lastUpdated && (
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">        <div className="space-y-2">          <h2 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+            Dashboard Kualitas Udara
+          </h2>{lastUpdated && (
             <p className={`text-sm flex items-center space-x-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-              <span className={`w-2 h-2 rounded-full ${isPolling ? 'bg-blue-500 animate-pulse' : 'bg-green-500'} ${!isPolling ? 'animate-pulse-slow' : ''}`}></span>
-              <span>Last updated: {lastUpdated.toLocaleString('id-ID')}</span>
-              {isPolling && <span className="text-xs">(Checking for updates...)</span>}
+              <span className={`w-2 h-2 rounded-full ${isPolling ? 'bg-blue-500 animate-pulse' : 'bg-green-500'} ${!isPolling ? 'animate-pulse-slow' : ''}`}></span>              <span>Terakhir diperbarui: {lastUpdated.toLocaleString('id-ID')}</span>
+              {isPolling && <span className="text-xs">(Memeriksa pembaruan...)</span>}
             </p>
           )}
         </div>
@@ -195,7 +192,7 @@ const Dashboard = ({ darkMode }) => {
           className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <RefreshCw className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`} />
-          <span className="font-medium">Refresh Data</span>
+          <span className="font-medium">Perbarui Data</span>
         </button>
       </div>      {/* Error banner */}
       {error && (

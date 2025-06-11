@@ -73,13 +73,12 @@ const Statistics = ({ data, darkMode }) => {
 
   return (
     <div className="space-y-6">
-      <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Statistics Overview</h3>
+      <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Ringkasan Statistik</h3>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">        <StatCard
-          icon={BarChart3}
-          title="Average AQI"
+          icon={BarChart3}          title="Rata-rata AQI"
           value={stats.avg}
-          subtitle={`Last ${data.length} readings`}
+          subtitle={`${data.length} pembacaan terakhir`}
           colorScheme={{
             bg: darkMode ? "bg-blue-900/20" : "bg-blue-50",
             text: darkMode ? "text-blue-300" : "text-blue-700",
@@ -90,10 +89,9 @@ const Statistics = ({ data, darkMode }) => {
         />
         
         <StatCard
-          icon={Target}
-          title="Highest AQI"
+          icon={Target}          title="AQI Tertinggi"
           value={stats.max}
-          subtitle="Peak level recorded"
+          subtitle="Level puncak tercatat"
           colorScheme={{
             bg: darkMode ? "bg-red-900/20" : "bg-red-50",
             text: darkMode ? "text-red-300" : "text-red-700",
@@ -104,10 +102,9 @@ const Statistics = ({ data, darkMode }) => {
         />
 
         <StatCard
-          icon={TrendingDown}
-          title="Lowest AQI"
+          icon={TrendingDown}          title="AQI Terendah"
           value={stats.min}
-          subtitle="Best level recorded"
+          subtitle="Level terbaik tercatat"
           colorScheme={{
             bg: darkMode ? "bg-green-900/20" : "bg-green-50",
             text: darkMode ? "text-green-300" : "text-green-700",
@@ -118,10 +115,9 @@ const Statistics = ({ data, darkMode }) => {
         />
 
         <StatCard
-          icon={Clock}
-          title="Trend"
+          icon={Clock}          title="Tren"
           value={Math.abs(stats.trend)}
-          subtitle={`${stats.trend > 0 ? 'Increasing' : stats.trend < 0 ? 'Decreasing' : 'Stable'} from last reading`}
+          subtitle={`${stats.trend > 0 ? 'Meningkat' : stats.trend < 0 ? 'Menurun' : 'Stabil'} dari pembacaan terakhir`}
           colorScheme={getTrendColor(stats.trend)}
           trend={stats.trend}
         />

@@ -1,72 +1,71 @@
 import { Info, Shield, AlertTriangle } from 'lucide-react'
 import { getAQISymbol } from '../utils/aqi'
 
-const AQILegend = ({ darkMode }) => {  const aqiLevels = [
-    { 
+const AQILegend = ({ darkMode }) => {  const aqiLevels = [    { 
       range: '0-50', 
-      label: 'Good', 
+      label: 'Baik', 
       color: 'bg-green-500', 
       textColor: darkMode ? 'text-green-300' : 'text-green-700', 
       bgColor: darkMode ? 'bg-green-900/20' : 'bg-green-50',
       borderColor: darkMode ? 'border-green-800' : 'border-green-200',
       icon: '😊', 
       symbol: getAQISymbol(25),
-      description: 'Air quality is satisfactory'
+      description: 'Kualitas udara memuaskan'
     },
     { 
       range: '51-100', 
-      label: 'Moderate', 
+      label: 'Sedang', 
       color: 'bg-yellow-500', 
       textColor: darkMode ? 'text-yellow-300' : 'text-yellow-700', 
       bgColor: darkMode ? 'bg-yellow-900/20' : 'bg-yellow-50',
       borderColor: darkMode ? 'border-yellow-800' : 'border-yellow-200',
       icon: '🙂', 
       symbol: getAQISymbol(75),
-      description: 'Acceptable for most people'
+      description: 'Dapat diterima sebagian besar orang'
     },
     { 
       range: '101-150', 
-      label: 'Unhealthy for Sensitive Groups', 
+      label: 'Tidak Sehat untuk Sensitif', 
       color: 'bg-orange-500', 
       textColor: darkMode ? 'text-orange-300' : 'text-orange-700', 
       bgColor: darkMode ? 'bg-orange-900/20' : 'bg-orange-50',
       borderColor: darkMode ? 'border-orange-800' : 'border-orange-200',
       icon: '😐', 
       symbol: getAQISymbol(125),
-      description: 'Sensitive individuals may experience issues'
+      description: 'Individu sensitif mungkin mengalami masalah'
     },
     { 
       range: '151-200', 
-      label: 'Unhealthy', 
+      label: 'Tidak Sehat', 
       color: 'bg-red-500', 
       textColor: darkMode ? 'text-red-300' : 'text-red-700', 
       bgColor: darkMode ? 'bg-red-900/20' : 'bg-red-50',
       borderColor: darkMode ? 'border-red-800' : 'border-red-200',
       icon: '☹️', 
       symbol: getAQISymbol(175),
-      description: 'Everyone may experience health effects'
+      description: 'Semua orang mungkin mengalami efek kesehatan'
     },
     { 
       range: '201-300', 
-      label: 'Very Unhealthy', 
+      label: 'Sangat Tidak Sehat', 
       color: 'bg-purple-500', 
       textColor: darkMode ? 'text-purple-300' : 'text-purple-700', 
       bgColor: darkMode ? 'bg-purple-900/20' : 'bg-purple-50',
       borderColor: darkMode ? 'border-purple-800' : 'border-purple-200',
       icon: '😷', 
       symbol: getAQISymbol(250),
-      description: 'Health alert for everyone'
+      description: 'Peringatan kesehatan untuk semua'
     },
     { 
       range: '301+', 
-      label: 'Hazardous', 
+      label: 'Berbahaya', 
       color: 'bg-red-900', 
       textColor: darkMode ? 'text-red-200' : 'text-red-800', 
       bgColor: darkMode ? 'bg-red-900/30' : 'bg-red-100',
       borderColor: darkMode ? 'border-red-700' : 'border-red-300',
       icon: '💀', 
       symbol: getAQISymbol(350),
-      description: 'Emergency conditions'
+      description: 'Kondisi darurat'
     }
   ]
 
@@ -75,9 +74,8 @@ const AQILegend = ({ darkMode }) => {  const aqiLevels = [
         <div className={`p-2 ${darkMode ? 'bg-blue-900/30' : 'bg-blue-100'} rounded-lg`}>
           <Info className={`h-6 w-6 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`} />
         </div>
-        <div>
-          <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>AQI Reference Scale</h3>
-          <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Understanding air quality levels</p>
+        <div>          <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Referensi Skala AQI</h3>
+          <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Memahami tingkat kualitas udara</p>
         </div>
       </div>
       
@@ -110,8 +108,7 @@ const AQILegend = ({ darkMode }) => {  const aqiLevels = [
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className={`${darkMode ? 'bg-blue-900/20' : 'bg-blue-50'} border ${darkMode ? 'border-blue-800' : 'border-blue-200'} rounded-xl p-4`}>
           <div className="flex items-center space-x-2 mb-2">
-            <Shield className={`h-4 w-4 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`} />
-            <h4 className={`font-semibold ${darkMode ? 'text-blue-100' : 'text-blue-900'}`}>About AQI</h4>
+            <Shield className={`h-4 w-4 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`} />            <h4 className={`font-semibold ${darkMode ? 'text-blue-100' : 'text-blue-900'}`}>Tentang AQI</h4>
           </div>
           <p className={`text-sm ${darkMode ? 'text-blue-200' : 'text-blue-800'}`}>
             Air Quality Index (AQI) adalah indeks standar untuk melaporkan kualitas udara harian. 
@@ -122,7 +119,7 @@ const AQILegend = ({ darkMode }) => {  const aqiLevels = [
         <div className={`${darkMode ? 'bg-amber-900/20' : 'bg-amber-50'} border ${darkMode ? 'border-amber-800' : 'border-amber-200'} rounded-xl p-4`}>
           <div className="flex items-center space-x-2 mb-2">
             <AlertTriangle className={`h-4 w-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`} />
-            <h4 className={`font-semibold ${darkMode ? 'text-amber-100' : 'text-amber-900'}`}>Health Recommendation</h4>
+            <h4 className={`font-semibold ${darkMode ? 'text-amber-100' : 'text-amber-900'}`}>Rekomendasi Kesehatan</h4>
           </div>
           <p className={`text-sm ${darkMode ? 'text-amber-200' : 'text-amber-800'}`}>
             Pada AQI 100, batasi aktivitas outdoor. Pada AQI 200, hindari aktivitas outdoor dan gunakan masker 

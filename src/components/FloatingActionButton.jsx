@@ -4,22 +4,21 @@ import { Plus, RefreshCw, Download, Share, Settings } from 'lucide-react'
 const FloatingActionButton = ({ onRefresh, onExport, onShare }) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const actions = [
-    {
+  const actions = [    {
       icon: RefreshCw,
-      label: 'Refresh Data',
+      label: 'Perbarui Data',
       onClick: onRefresh,
       color: 'bg-blue-600 hover:bg-blue-700'
     },
     {
       icon: Download,
-      label: 'Export Data',
+      label: 'Ekspor Data',
       onClick: onExport,
       color: 'bg-green-600 hover:bg-green-700'
     },
     {
       icon: Share,
-      label: 'Share Report',
+      label: 'Bagikan Laporan',
       onClick: onShare,
       color: 'bg-purple-600 hover:bg-purple-700'
     }
@@ -46,7 +45,7 @@ const FloatingActionButton = ({ onRefresh, onExport, onShare }) => {
       {/* Main FAB */}      <button
         onClick={() => setIsOpen(!isOpen)}
         className={`bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 sm:p-4 rounded-full shadow-lg transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${isOpen ? 'rotate-45' : 'rotate-0'}`}
-        title={isOpen ? 'Close menu' : 'Open menu'}
+        title={isOpen ? 'Tutup menu' : 'Buka menu'}
       >
         <Plus className="h-6 w-6 sm:h-6 sm:w-6" />
       </button>

@@ -1,11 +1,11 @@
 // AQI utility functions with modern, accessible colors
 export const getAQICategory = (aqi) => {
-  if (aqi <= 50) return "Good"
-  else if (aqi <= 100) return "Moderate"
-  else if (aqi <= 150) return "Unhealthy for Sensitive Groups"
-  else if (aqi <= 200) return "Unhealthy"
-  else if (aqi <= 300) return "Very Unhealthy"
-  else return "Hazardous"
+  if (aqi <= 50) return "Baik"
+  else if (aqi <= 100) return "Sedang"
+  else if (aqi <= 150) return "Tidak Sehat untuk Sensitif"
+  else if (aqi <= 200) return "Tidak Sehat"
+  else if (aqi <= 300) return "Sangat Tidak Sehat"
+  else return "Berbahaya"
 }
 
 export const getAQIColor = (aqi) => {
@@ -54,12 +54,12 @@ export const getAQIAccentColor = (aqi) => {
 }
 
 export const getAQIDescription = (aqi) => {
-  if (aqi <= 50) return "Air quality is satisfactory and poses little or no risk."
-  else if (aqi <= 100) return "Air quality is acceptable for most people."
-  else if (aqi <= 150) return "Sensitive individuals may experience minor issues."
-  else if (aqi <= 200) return "Everyone may begin to experience health effects."
-  else if (aqi <= 300) return "Health alert: everyone may experience serious effects."
-  else return "Emergency conditions: entire population at risk."
+  if (aqi <= 50) return "Kualitas udara memuaskan dan risiko sangat kecil."
+  else if (aqi <= 100) return "Kualitas udara dapat diterima untuk sebagian besar orang."
+  else if (aqi <= 150) return "Individu sensitif mungkin mengalami masalah ringan."
+  else if (aqi <= 200) return "Semua orang mungkin mulai mengalami efek kesehatan."
+  else if (aqi <= 300) return "Peringatan kesehatan: semua orang mungkin mengalami efek serius."
+  else return "Kondisi darurat: seluruh populasi berisiko."
 }
 
 export const getAQIIcon = (aqi) => {

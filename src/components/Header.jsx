@@ -32,9 +32,8 @@ const Header = ({ darkMode, toggleDarkMode }) => {
           </div>          <div className="flex items-center space-x-2 sm:space-x-4">            {enableDarkMode && (
                 <button
                   onClick={toggleDarkMode}
-                  className={`p-3 sm:p-2 rounded-lg ${darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'} transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
-                  aria-label="Toggle dark mode"
-                  title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+                  className={`p-3 sm:p-2 rounded-lg ${darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'} transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}                  aria-label="Toggle dark mode"
+                  title={darkMode ? 'Beralih ke mode terang' : 'Beralih ke mode gelap'}
                 >
                   {darkMode ? (
                   <Sun className="h-5 w-5 sm:h-5 sm:w-5 text-yellow-500" />
