@@ -11,10 +11,9 @@ export default defineConfig(({ mode }) => {
   const plugins = [react()]
   
   if (enablePWA) {
-    plugins.push(
-      VitePWA({
+    plugins.push(      VitePWA({
         registerType: 'autoUpdate',
-        includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
+        includeAssets: ['favicon.ico', 'pwa-64x64.png', 'apple-touch-icon-180x180.png'],
         manifest: {
           name: appName,
           short_name: 'AirQuality',
@@ -24,23 +23,35 @@ export default defineConfig(({ mode }) => {
           display: 'standalone',
           orientation: 'portrait',
           scope: '/',
-          start_url: '/',
-          icons: [
+          start_url: '/',          icons: [
+            {
+              src: 'pwa-64x64.png',
+              sizes: '64x64',
+              type: 'image/png',
+              purpose: 'any'
+            },
             {
               src: 'pwa-192x192.png',
               sizes: '192x192',
-              type: 'image/png'
+              type: 'image/png',
+              purpose: 'any'
             },
             {
-              src: 'pwa-512x512.png',
-              sizes: '512x512',
-              type: 'image/png'
-            },
-            {
-              src: 'pwa-512x512.png',
+              src: 'pwa-512x512.png', 
               sizes: '512x512',
               type: 'image/png',
-              purpose: 'any maskable'
+              purpose: 'any'
+            },
+            {
+              src: 'maskable-icon-512x512.png',
+              sizes: '512x512', 
+              type: 'image/png',
+              purpose: 'maskable'
+            },
+            {
+              src: 'apple-touch-icon-180x180.png',
+              sizes: '180x180',
+              type: 'image/png'
             }
           ]
         },
